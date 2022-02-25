@@ -17,19 +17,19 @@ public class ProductRepositoryTests {
     @Autowired
     private ProductRepository repository;
 
-    private long exitingId;
+    private long existingId;
     private long nonExistingId;
     private long countTotalProducts;
 
     @BeforeEach
-    void setUp() throws Exception{
-        exitingId = 1L;
+    void setUp() throws Exception {
+        existingId = 1L;
         nonExistingId = 1000L;
         countTotalProducts = 25L;
     }
 
     @Test
-    public void saveShouldPersistWithAutoIncrementWhenIdIsNull(){
+    public void saveShouldPersistWithAutoIncrementWhenIdIsNull() {
         Product product = Factory.createdProduct();
         product.setId(null);
 
@@ -42,9 +42,9 @@ public class ProductRepositoryTests {
     @Test
     public void deleteShouldDeleteObjectWhenIdExists() {
 
-        repository.deleteById(exitingId);
+        repository.deleteById(existingId);
 
-        Optional<Product> result = repository.findById(exitingId);
+        Optional<Product> result = repository.findById(existingId);
         Assertions.assertFalse(result.isPresent());
     }
 
@@ -56,4 +56,17 @@ public class ProductRepositoryTests {
         });
     }
 
+    @Test
+    public void findByIdShouldReturnNonEmptyOptionalProductWhenIdExists() {
+        Optional<Product> result = repository.findById(existingId);
+
+        Assertions.assertTrue(result.isPresent());
+    }
+
+    @Test
+    public void findByIdShouldReturnEmptyOptionalProductWhenIdDoesNotExist() {
+        Optional<Product> result = repository.findById(nonExistingId);
+
+        Assertions.assertTrue(result.isEmpty());
+    }
 }
