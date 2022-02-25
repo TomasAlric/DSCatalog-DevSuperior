@@ -16,9 +16,17 @@ public class ProductRepositoryTests {
     @Autowired
     private ProductRepository repository;
 
+    private long exitingId;
+    private long nonExistingId;
+
+    @BeforeEach
+    void setUp() throws Exception{
+        exitingId = 1L;
+        nonExistingId = 1000L;
+    }
+
     @Test
     public void deleteShouldDeleteObjectWhenIdExists() {
-        long exitingId = 1L;
 
         repository.deleteById(exitingId);
 
@@ -28,7 +36,6 @@ public class ProductRepositoryTests {
 
     @Test
     public void deleteShouldThrowEmptyResultDataAccessExceptionWhenIdDoesNotExist() {
-        long nonExistingId = 1000L;
 
         Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
             repository.deleteById(nonExistingId);
