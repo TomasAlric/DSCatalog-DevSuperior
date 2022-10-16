@@ -51,23 +51,21 @@ public class ProductService {
     @Transactional
     public ProductDTO insert(ProductDTO dto) {
         Product entity = new Product();
-        copyDtoToEntity(dto,entity);
+        copyDtoToEntity(dto, entity);
         entity = repository.save(entity);
         return new ProductDTO(entity);
     }
 
     @Transactional
     public ProductDTO update(Long id, ProductDTO dto) {
-
         try {
             Product entity = repository.getById(id);
-            copyDtoToEntity(dto,entity);
+            copyDtoToEntity(dto, entity);
             entity = repository.save(entity);
             return new ProductDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);
         }
-
     }
 
     public void delete(Long id) {
@@ -89,7 +87,7 @@ public class ProductService {
         entity.setPrice(dto.getPrice());
 
         entity.getCategories().clear();
-        for(CategoryDTO catDto : dto.getCategories()){
+        for (CategoryDTO catDto : dto.getCategories()) {
             Category category = categoryRepository.getById(catDto.getId());
             entity.getCategories().add(category);
         }
